@@ -5,7 +5,7 @@
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
-        <div class="logo">后台管理系统</div>
+        <div class="logo">黄毛小说专用系统</div>
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 全屏显示 -->
@@ -21,7 +21,7 @@
                         :content="message?`有${message}条未读消息`:`消息中心`"
                         placement="bottom"
                     >
-                        <router-link to="/tabs">
+                        <router-link to="/index">
                             <i class="el-icon-bell"></i>
                         </router-link>
                     </el-tooltip>
@@ -29,7 +29,7 @@
                 </div>
                 <!-- 用户头像 -->
                 <div class="user-avator">
-                    <img src="../../assets/img/img.jpg" />
+                    <img :src="headImg">
                 </div>
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
@@ -38,7 +38,7 @@
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
+                        <a href="https://github.com/wuguangnuo/website-vue" target="_blank">
                             <el-dropdown-item>项目仓库</el-dropdown-item>
                         </a>
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
@@ -56,12 +56,13 @@ export default {
             collapse: false,
             fullscreen: false,
             name: 'linxin',
-            message: 2
+            message: 2,
+            headImg: localStorage.getItem("headImg")
         };
     },
     computed: {
         username() {
-            let username = localStorage.getItem('ms_username');
+            let username = localStorage.getItem('realName');
             return username ? username : this.name;
         }
     },
@@ -69,7 +70,7 @@ export default {
         // 用户名下拉菜单选择事件
         handleCommand(command) {
             if (command == 'loginout') {
-                localStorage.removeItem('ms_username');
+                localStorage.clear();
                 this.$router.push('/login');
             }
         },

@@ -4,16 +4,22 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 export default new Router({
+    mode: "history",
     routes: [
         {
             path: '/',
-            redirect: '/dashboard'
+            redirect: '/index'
         },
         {
             path: '/',
             component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
             meta: { title: '自述文件' },
             children: [
+                {
+                    path: '/index',
+                    component: () => import(/* webpackChunkName: "index" */ '../components/page/Index.vue'),
+                    meta: { title: '系统首页' }
+                },
                 {
                     path: '/dashboard',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),

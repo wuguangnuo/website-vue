@@ -1,10 +1,16 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">后台管理系统</div>
-            <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
+            <div class="ms-title">黄毛写小说专用系统</div>
+            <el-form
+                :model="ruleForm"
+                :rules="rules"
+                ref="ruleForm"
+                label-width="0px"
+                class="ms-content"
+            >
                 <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="username">
+                    <el-input v-model="ruleForm.username" placeholder="username">
                         <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
                     </el-input>
                 </el-form-item>
@@ -12,16 +18,16 @@
                     <el-input
                         type="password"
                         placeholder="password"
-                        v-model="param.password"
-                        @keyup.enter.native="submitForm()"
+                        v-model="ruleForm.password"
+                        @keyup.enter.native="submitForm('ruleForm')"
                     >
                         <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
-                    <el-button type="primary" @click="submitForm()">登录</el-button>
+                    <el-button type="primary" @click="submitForm(ruleForm)">登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <p class="login-tips">{{loginTips}}</p>
             </el-form>
         </div>
     </div>
@@ -31,48 +37,79 @@
 export default {
     data: function() {
         return {
-            param: {
-                username: 'admin',
-                password: '123123',
+            title: '',
+            loginTips: '',
+            ruleForm: {
+                username: '',
+                password: ''
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-                password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-            },
+                password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+            }
         };
     },
     methods: {
-        submitForm() {
-            this.$refs.login.validate(valid => {
-                if (valid) {
-                    this.$message.success('登录成功');
-                    localStorage.setItem('ms_username', this.param.username);
+        submitForm(formName) {
+            // this.$refs[formName].validate((valid) => {
+            //     if (valid) {
+            //         localStorage.setItem('ms_username',this.ruleForm.username);
+            //         this.$router.push('/');
+            //     } else {
+            //         console.log('error submit!!');
+            //         return false;
+            //     }
+            // });
+            this.$postData(
+                'login',
+                {
+                    account: formName.username,
+                    password: formName.password
+                },
+                {}
+            ).then(res => {
+                if (res.state == 200) {
+                    localStorage.setItem('token', res.data.token);
+                    localStorage.setItem('userName', res.data.username);
+                    localStorage.setItem('realName', res.data.realname);
+                    localStorage.setItem('headImg', res.data.headimg);
+                    localStorage.setItem('lastTm', res.data.loginAt);
                     this.$router.push('/');
                 } else {
-                    this.$message.error('请输入账号和密码');
-                    console.log('error submit!!');
-                    return false;
+                    this.loginTips = res.msg;
                 }
             });
-        },
-    },
+        }
+    }
 };
 </script>
 
 <style scoped>
 .login-wrap {
-    position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        url('https://wuguangnuo-1257896087.cos.ap-guangzhou.myqcloud.com/public/img/ReinhardtWilhelm.jpg') no-repeat fixed;
+    position: fixed;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-image: url(../../assets/img/login-bg.jpg);
-    background-size: 100%;
+    z-index: 0;
+    font-size: 12px;
+    font-family: Georgia, Arial, SimSun, 'Microsoft Yahei';
+    margin: 0;
+    padding: 0;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
 }
 .ms-title {
     width: 100%;
-    line-height: 50px;
+    line-height: 60px;
     text-align: center;
-    font-size: 20px;
-    color: #fff;
+    font-size: 24px;
+    color: #333;
+    font-weight: 500;
     border-bottom: 1px solid #ddd;
 }
 .ms-login {
@@ -99,6 +136,6 @@ export default {
 .login-tips {
     font-size: 12px;
     line-height: 30px;
-    color: #fff;
+    color: red;
 }
 </style>
