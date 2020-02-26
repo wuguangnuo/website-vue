@@ -36,6 +36,11 @@ export default new Router({
                     meta: { title: '基础表格' }
                 },
                 {
+                    path: '/novellist',
+                    component: () => import(/* webpackChunkName: "novellist" */ '../components/page/NovelList.vue'),
+                    meta: { title: '小说列表' }
+                },
+                {
                     path: '/tabs',
                     component: () => import(/* webpackChunkName: "tabs" */ '../components/page/Tabs.vue'),
                     meta: { title: 'tab选项卡' }

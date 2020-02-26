@@ -16,7 +16,7 @@
                 <el-input v-model="title" placeholder="小说标题"></el-input>
             </div>
             <mavon-editor v-model="content" ref="md" @imgAdd="$imgAdd" @change="change" style="min-height: 600px"/>
-            <el-button class="editor-btn" type="primary" @click="submit">提交</el-button>
+            <el-button class="editor-btn" type="primary" @click="submit">提交/更新</el-button>
             <el-button class="editor-btn" type="primary" @click="newNovel">新文章</el-button>
         </div>
     </div>

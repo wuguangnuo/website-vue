@@ -3,6 +3,7 @@ import Vue from 'vue'
 import api from "./api"
 
 axios.defaults.baseURL = "http://127.0.0.1:8800";
+// axios.defaults.baseURL = "http://api.wuguangnuo.cn:8800";
 // axios.defaults.headers.common['Authorization'] = '111';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 // 超时时间

@@ -22,7 +22,7 @@
                 <el-input v-model="title" placeholder="小说标题"></el-input>
             </div>
             <quill-editor ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor>
-            <el-button class="editor-btn" type="primary" @click="submit">提交</el-button>
+            <el-button class="editor-btn" type="primary" @click="submit">提交/更新</el-button>
             <el-button class="editor-btn" type="primary" @click="newNovel">新文章</el-button>
         </div>
     </div>
