@@ -10,6 +10,7 @@ export default {
     addEdit: "manage/addEdit",//新增小说
     addMarkdown: "manage/addMarkdown",//新增Markdown小说
     novelList: "manage/novelList",//查看小说列表
-    novelDetail: "manage/novelDetail"//查看小说
+    novelDetail: "manage/novelDetail",//查看小说
+    novelDelete: "manage/novelDelete"//删除小说
 
 }

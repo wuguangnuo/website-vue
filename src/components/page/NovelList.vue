@@ -1,119 +1,173 @@
 <template>
-    <div>
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 公开文章
-                </el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-        <div class="container">
-            <div class="handle-box">
-                <el-form ref="form" :model="pageInfo">
-                    <el-row>
-                        <el-col :span="10">
-                            <el-form-item label="小说标题">
-                                <el-input
-                                    v-model="dto.novelTitle"
-                                    placeholder="小说标题"
-                                    style="width:250px"
-                                    class="handle-input mr10"
-                                ></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="10">
-                            <el-form-item label="发布时间">
-                                <el-date-picker
-                                    v-model="createTm"
-                                    type="daterange"
-                                    align="right"
-                                    unlink-panels
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期"
-                                    format="yyyy 年 MM 月 dd 日"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                ></el-date-picker>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="4" style="text-align:right">
-                            <el-button type="primary" @click="onSubmit">搜索</el-button>
-                            <el-button type="success" @click="exportExcel">导出Excel</el-button>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="10">
-                            <el-form-item label="文本类型">
-                                <el-input
-                                    v-model="dto.novelType"
-                                    placeholder="文本类型"
-                                    style="width:250px"
-                                    class="handle-input mr10"
-                                ></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="10">
-                            <el-form-item label="更新时间">
-                                <el-date-picker
-                                    v-model="updateTm"
-                                    type="daterange"
-                                    align="right"
-                                    unlink-panels
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期"
-                                    format="yyyy 年 MM 月 dd 日"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                ></el-date-picker>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                </el-form>
-            </div>
-            <el-table :data="data" border class="table" ref="multipleTable" @sort-change="sortChange">
-                <el-table-column prop="id" label="ID" width="80" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="novelTitle" label="标题" :show-overflow-tooltip="true" sortable="custom"></el-table-column>
-                <el-table-column prop="novelAuthor" label="作者" width="120" :show-overflow-tooltip="true" sortable="custom"></el-table-column>
-                <el-table-column
-                    prop="novelType"
-                    label="类型"
-                    width="120"
-                    :show-overflow-tooltip="true"
-                    sortable="custom"
-                ></el-table-column>
-                <el-table-column
-                    prop="novelContent"
-                    label="内容"
-                    :show-overflow-tooltip="true"
-                ></el-table-column>
-                <el-table-column
-                    prop="createTm"
-                    label="创建时间"
-                    :show-overflow-tooltip="true"
-                    sortable="custom"
-                ></el-table-column>
-                <el-table-column
-                    prop="updateTm"
-                    label="更新时间"
-                    :show-overflow-tooltip="true"
-                    sortable="custom"
-                ></el-table-column>
-            </el-table>
-            <div class="pagination">
-                <el-pagination
-                    background
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="pageInfo.total"
-                    :page-size="pageInfo.size"
-                    :current-page="pageInfo.current"
-                    :page-sizes="[10,20,50,100]"
-                    :page-count="pageInfo.pages"
-                    @size-change="sizeChange"
-                    @current-change="currentChange"
-                ></el-pagination>
-            </div>
-        </div>
+  <div>
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>
+          <i class="el-icon-lx-cascades"></i> 公开文章
+        </el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
+    <div class="container">
+      <div class="handle-box">
+        <el-form
+          ref="form"
+          :model="pageInfo"
+        >
+          <el-row>
+            <el-col :span="10">
+              <el-form-item label="文章标题">
+                <el-input
+                  v-model="dto.novelTitle"
+                  placeholder="文章标题"
+                  style="width:250px"
+                  class="handle-input mr10"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="发布时间">
+                <el-date-picker
+                  v-model="createTm"
+                  type="daterange"
+                  align="right"
+                  unlink-panels
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col
+              :span="4"
+              style="text-align:right"
+            >
+              <el-button
+                type="primary"
+                @click="onSubmit"
+              >搜索</el-button>
+              <el-button
+                type="success"
+                @click="exportExcel"
+              >导出Excel</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="10">
+              <el-form-item label="文本类型">
+                <el-input
+                  v-model="dto.novelType"
+                  placeholder="文本类型"
+                  style="width:250px"
+                  class="handle-input mr10"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="更新时间">
+                <el-date-picker
+                  v-model="updateTm"
+                  type="daterange"
+                  align="right"
+                  unlink-panels
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+      <el-table
+        :data="data"
+        border
+        class="table"
+        ref="multipleTable"
+        @sort-change="sortChange"
+      >
+        <el-table-column
+          prop="id"
+          label="编号"
+          width="100"
+          :show-overflow-tooltip="true"
+          sortable="custom"
+        ></el-table-column>
+        <el-table-column
+          prop="novelTitle"
+          label="标题"
+          width="200"
+          :show-overflow-tooltip="true"
+          sortable="custom"
+        ></el-table-column>
+        <el-table-column
+          prop="novelAuthor"
+          label="作者"
+          width="150"
+          :show-overflow-tooltip="true"
+          sortable="custom"
+        ></el-table-column>
+        <el-table-column
+          prop="novelType"
+          label="类型"
+          width="150"
+          :show-overflow-tooltip="true"
+          sortable="custom"
+        ></el-table-column>
+        <el-table-column
+          prop="novelContent"
+          label="内容"
+          :show-overflow-tooltip="true"
+        ></el-table-column>
+        <el-table-column
+          prop="createTm"
+          label="创建时间"
+          width="150"
+          :show-overflow-tooltip="true"
+          sortable="custom"
+        ></el-table-column>
+        <el-table-column
+          prop="updateTm"
+          label="更新时间"
+          width="150"
+          :show-overflow-tooltip="true"
+          sortable="custom"
+        ></el-table-column>
+        <el-table-column
+          label="操作"
+          width="150"
+        >
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              @click="novelEdit(scope.$index, scope.row)"
+            >编辑</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="novelDelete(scope.$index, scope.row)"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="pagination">
+        <el-pagination
+          background
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pageInfo.total"
+          :page-size="pageInfo.size"
+          :current-page="pageInfo.current"
+          :page-sizes="[10,20,50,100]"
+          :page-count="pageInfo.pages"
+          @size-change="sizeChange"
+          @current-change="currentChange"
+        ></el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -137,12 +191,12 @@ export default {
             serviceOptions: [], //服务区域
             serviceArray: [],
             dto: {
-                novelTitle:'',
-                novelType:'',
+                novelTitle: '',
+                novelType: '',
                 createTm1: '',
                 createTm2: '',
-                updateTm1:'',
-                updateTm2:'',
+                updateTm1: '',
+                updateTm2: '',
 
                 export: '',
                 orderBy: '',
@@ -166,19 +220,44 @@ export default {
     computed: {
         data() {
             return this.tableData.filter(d => {
-                d.createTm =
-                    d.createTm == null
-                        ? null
-                        : d.createTm.replace("T", " ").substring(0, 16);
-                d.updateTm =
-                    d.updateTm == null
-                        ? null
-                        : d.updateTm.replace("T", " ").substring(0, 16);
+                d.createTm = d.createTm == null ? null : d.createTm.replace('T', ' ').substring(0, 16);
+                d.updateTm = d.updateTm == null ? null : d.updateTm.replace('T', ' ').substring(0, 16);
                 return d;
             });
         }
     },
     methods: {
+        novelEdit(index, row){
+            console.log(index+"e"+row);
+        },
+        novelDelete(index, row){
+            this.$confirm('确定删除文章【'+row.novelTitle+'】?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$getData('novelDelete', {novelId:row.id}, {})
+                        .then(res => {
+                            if (res.state == 200) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                                 this.getData();
+                             } else {
+                                this.$message.error('操作失败，' + res.msg);
+                            }
+                        })
+                        .catch(error => {
+                            this.$message.error('操作失败，系统超时');
+                        });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消'
+                    });          
+                });
+        },
         changeValue(value) {
             // this.dto.productId = "";
             // this.$getData("getProductName", { productCategoryId: value }).then(
@@ -206,15 +285,15 @@ export default {
                 });
         },
         onSubmit() {
-            this.dto.createTm1 = this.createTm?this.createTm[0]||"":"";
-            this.dto.createTm2 = this.createTm?this.createTm[1]||"":"";
-            this.dto.updateTm1 = this.updateTm?this.updateTm[0]||"":"";
-            this.dto.updateTm2 = this.updateTm?this.updateTm[1]||"":"";
+            this.dto.createTm1 = this.createTm ? this.createTm[0] || '' : '';
+            this.dto.createTm2 = this.createTm ? this.createTm[1] || '' : '';
+            this.dto.updateTm1 = this.updateTm ? this.updateTm[0] || '' : '';
+            this.dto.updateTm2 = this.updateTm ? this.updateTm[1] || '' : '';
 
             // this.dto.areaId = this.serviceArray[this.serviceArray.length - 1];
             this.dto.export = '';
-            this.dto.orderBy = "";
-            this.dto.pageSize = "";
+            this.dto.orderBy = '';
+            this.dto.pageSize = '';
             this.dto.pageIndex = '1';
 
             this.getData();
@@ -225,7 +304,7 @@ export default {
                 responseType: 'arraybuffer'
             }).then(res => {
                 this.blobExport({
-                    tablename: '小说列表',
+                    tablename: '文章列表',
                     res: res
                 });
                 this.dto.export = '';
