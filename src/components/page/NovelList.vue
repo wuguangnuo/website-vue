@@ -227,35 +227,43 @@ export default {
         }
     },
     methods: {
-        novelEdit(index, row){
-            console.log(index+"e"+row);
+        novelEdit(index, row) {
+          if(row.novelType == 'Html'){
+            this.$router.push({ name: 'editor', params: { novelId: row.id, novelType: row.novelType }})
+          } else if(row.novelType == 'Markdown'){
+            this.$router.push({ name: 'markdown', params: { novelId: row.id, novelType: row.novelType }})
+          } else {
+            this.$message.error('文章类型错误:' + row.novelType);
+          }
         },
-        novelDelete(index, row){
-            this.$confirm('确定删除文章【'+row.novelTitle+'】?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$getData('novelDelete', {novelId:row.id}, {})
+        novelDelete(index, row) {
+            this.$confirm('确定删除文章【' + row.novelTitle + '】?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    this.$postData('novelDelete', { id: row.id }, {})
                         .then(res => {
                             if (res.state == 200) {
                                 this.$message({
                                     type: 'success',
                                     message: '删除成功!'
                                 });
-                                 this.getData();
-                             } else {
+                                this.getData();
+                            } else {
                                 this.$message.error('操作失败，' + res.msg);
                             }
                         })
                         .catch(error => {
                             this.$message.error('操作失败，系统超时');
                         });
-                }).catch(() => {
+                })
+                .catch(() => {
                     this.$message({
                         type: 'info',
                         message: '已取消'
-                    });          
+                    });
                 });
         },
         changeValue(value) {

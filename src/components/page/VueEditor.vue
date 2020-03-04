@@ -9,19 +9,22 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <div class="plugins-tips">
+            <!-- <div class="plugins-tips">
                 Vue-Quill-Editor：基于Quill、适用于Vue2的富文本编辑器。
                 访问地址：
                 <a
                     href="https://github.com/surmon-china/vue-quill-editor"
                     target="_blank"
                 >vue-quill-editor</a>
-            </div>
+            </div> -->
             <div style='margin-bottom:20px'>
                 <label>小说标题</label>
                 <el-input v-model="title" placeholder="小说标题"></el-input>
             </div>
-            <quill-editor ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor>
+            <quill-editor ref="myTextEditor" 
+                v-model="content" 
+                :options="editorOption">
+            </quill-editor>
             <el-button class="editor-btn" type="primary" @click="submit">提交/更新</el-button>
             <el-button class="editor-btn" type="primary" @click="newNovel">新文章</el-button>
         </div>
@@ -45,12 +48,44 @@ export default {
             }
         };
     },
+    created(){
+        var novelId = this.$route.params.novelId;
+        if(novelId){
+            this.getNovel(novelId)
+        }
+    },
+    watch: {
+        $route (to, from) {
+            if( from.path == '/novellist' && this.$route.params.novelType == 'Html') {
+                var novelId = this.$route.params.novelId;
+                if(novelId){
+                    this.getNovel(novelId)
+                }
+            }
+        }
+    },
     components: {
         quillEditor
     },
     methods: {
         onEditorChange({ editor, html, text }) {
             this.content = html;
+        },
+        getNovel(novelId){
+            this.$postData(
+                'novelDetail',
+                {id: novelId}
+            ).then(res => {
+                if (res.state == 200) {
+                    this.novelId = res.data.id
+                    this.content = res.data.novelContent
+                    this.title = res.data.novelTitle
+                } else {
+                    this.$message.error(res.msg);
+                }
+            }).catch(error => {
+                this.$message.error('查询失败，系统超时');
+            });
         },
         submit() {
             // console.log(this.content);

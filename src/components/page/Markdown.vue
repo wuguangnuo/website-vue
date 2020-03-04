@@ -7,10 +7,10 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <div class="plugins-tips">
+            <!-- <div class="plugins-tips">
                 mavonEditor：基于Vue的markdown编辑器。
                 访问地址：<a href="https://github.com/hinesboy/mavonEditor" target="_blank">mavonEditor</a>
-            </div>
+            </div> -->
             <div style='margin-bottom:20px'>
                 <label>小说标题</label>
                 <el-input v-model="title" placeholder="小说标题"></el-input>
@@ -37,23 +37,66 @@
                 }
             }
         },
+        created(){
+            var novelId = this.$route.params.novelId;
+            if(novelId){
+                this.getNovel(novelId)
+            }
+        },
+        watch: {
+            $route (to, from) {
+                if( from.path == '/novellist' && this.$route.params.novelType == 'Markdown') {
+                    var novelId = this.$route.params.novelId;
+                    if(novelId){
+                        this.getNovel(novelId)
+                    }
+                }
+            }
+        },
         components: {
             mavonEditor
         },
         methods: {
+            getNovel(novelId){
+                this.$postData(
+                    'novelDetail',
+                    {id: novelId}
+                ).then(res => {
+                    if (res.state == 200) {
+                        this.novelId = res.data.id
+                        this.content = res.data.novelContent
+                        this.title = res.data.novelTitle
+                    } else {
+                        this.$message.error(res.msg);
+                    }
+                }).catch(error => {
+                    this.$message.error('查询失败，系统超时');
+                });
+            },
             // 将图片上传到服务器，返回地址替换到md中
             $imgAdd(pos, $file){
                 var formdata = new FormData();
                 formdata.append('file', $file);
                 // 这里没有服务器供大家尝试，可将下面上传接口替换为你自己的服务器接口
-                this.$axios({
-                    url: '/common/upload',
-                    method: 'post',
-                    data: formdata,
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                }).then((url) => {
-                    this.$refs.md.$img2Url(pos, url);
-                })
+                // this.$axios({
+                //     url: '/common/upload',
+                //     method: 'post',
+                //     data: formdata,
+                //     headers: { 'Content-Type': 'multipart/form-data' },
+                // }).then((url) => {
+                //     this.$refs.md.$img2Url(pos, url);
+                // })
+                this.$postData('uploadImg', formdata)
+                    .then(res => {
+                        if (res.state == 200) {
+                            this.$message.success(res.msg);
+                            this.$refs.md.$img2Url(pos, res.data);
+                        } else {
+                            this.$message.error(res.msg);
+                        }
+                    }).catch(error => {
+                        this.$message.error('查询失败，系统超时');
+                    });
             },
             change(value, render){
                 // render 为 markdown 解析后的结果

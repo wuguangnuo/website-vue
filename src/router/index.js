@@ -53,12 +53,14 @@ export default new Router({
                 {
                     // 富文本编辑器组件
                     path: '/editor',
+                    name: 'editor',
                     component: () => import(/* webpackChunkName: "editor" */ '../components/page/VueEditor.vue'),
                     meta: { title: '富文本编辑器' }
                 },
                 {
                     // markdown组件
                     path: '/markdown',
+                    name: 'markdown',
                     component: () => import(/* webpackChunkName: "markdown" */ '../components/page/Markdown.vue'),
                     meta: { title: 'markdown编辑器' }
                 },
