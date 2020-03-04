@@ -138,13 +138,19 @@
         ></el-table-column>
         <el-table-column
           label="操作"
-          width="150"
+          width="225"
         >
           <template slot-scope="scope">
             <el-button
               size="mini"
+              type="primary"
               @click="novelEdit(scope.$index, scope.row)"
             >编辑</el-button>
+            <el-button
+              size="mini"
+              type="success"
+              @click="novelDownload(scope.$index, scope.row)"
+            >下载</el-button>
             <el-button
               size="mini"
               type="danger"
@@ -235,6 +241,21 @@ export default {
           } else {
             this.$message.error('文章类型错误:' + row.novelType);
           }
+        },
+        novelDownload(index, row) {
+          this.$postData('novelDownload', { id: row.id }, {})
+            .then(res => {
+                if (res.state == 200) {
+                    this.$alert('文件生成成功，点击&nbsp;<strong><a href="'+res.data+'">'+row.novelTitle+'</a></strong>&nbsp;下载', '文件下载', {
+                      dangerouslyUseHTMLString: true
+                    });
+                } else {
+                    this.$message.error('操作失败，' + res.msg);
+                }
+            })
+            .catch(error => {
+                this.$message.error('操作失败，系统超时');
+            });
         },
         novelDelete(index, row) {
             this.$confirm('确定删除文章【' + row.novelTitle + '】?', '提示', {
