@@ -245,7 +245,7 @@ export default {
         novelDownload(index, row) {
           this.$postData('novelDownload', { id: row.id }, {})
             .then(res => {
-                if (res.state == 200) {
+                if (res.code == 200) {
                     this.$alert('文件生成成功，点击&nbsp;<strong><a href="'+res.data+'">'+row.novelTitle+'</a></strong>&nbsp;下载', '文件下载', {
                       dangerouslyUseHTMLString: true
                     });
@@ -266,7 +266,7 @@ export default {
                 .then(() => {
                     this.$postData('novelDelete', { id: row.id }, {})
                         .then(res => {
-                            if (res.state == 200) {
+                            if (res.code == 200) {
                                 this.$message({
                                     type: 'success',
                                     message: '删除成功!'
@@ -299,7 +299,7 @@ export default {
             this.openFullScreen();
             this.$postData('novelList', this.dto, {})
                 .then(res => {
-                    if (res.state == 200) {
+                    if (res.code == 200) {
                         this.tableData = res.data.records;
                         this.pageInfo = res.data;
                         this.closeFullScreen();

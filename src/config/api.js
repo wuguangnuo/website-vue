@@ -13,6 +13,9 @@ export default {
     novelDetail: "manage/novelDetail",//查看小说
     novelDelete: "manage/novelDelete",//删除小说
     uploadImg: "manage/uploadImg",//上传小说图片
-    novelDownload: "manage/downloadDoc"//小说下载
+    novelDownload: "manage/downloadDoc",//小说下载
+
+    getProfile: "profile/getProfile",//获取个人信息
+    updateProfile: "profile/updateProfile"//更新个人信息
 
 }

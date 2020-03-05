@@ -7,10 +7,9 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <!-- <div class="plugins-tips">
-                mavonEditor：基于Vue的markdown编辑器。
-                访问地址：<a href="https://github.com/hinesboy/mavonEditor" target="_blank">mavonEditor</a>
-            </div> -->
+            <div class="plugins-tips">
+                注意：不建议使用图片上传大图(超过200kb)，大图建议插入图片链接
+            </div>
             <div style='margin-bottom:20px'>
                 <label>小说标题</label>
                 <el-input v-model="title" placeholder="小说标题"></el-input>
@@ -62,7 +61,7 @@
                     'novelDetail',
                     {id: novelId}
                 ).then(res => {
-                    if (res.state == 200) {
+                    if (res.code == 200) {
                         this.novelId = res.data.id
                         this.content = res.data.novelContent
                         this.title = res.data.novelTitle
@@ -88,7 +87,7 @@
                 // })
                 this.$postData('uploadImg', formdata)
                     .then(res => {
-                        if (res.state == 200) {
+                        if (res.code == 200) {
                             this.$message.success(res.msg);
                             this.$refs.md.$img2Url(pos, res.data);
                         } else {
@@ -115,7 +114,7 @@
                     },
                     {}
                 ).then(res => {
-                    if (res.state == 200) {
+                    if (res.code == 200) {
                         if(this.novelId == 0){
                             this.$message.success('提交成功！');
                         }else{

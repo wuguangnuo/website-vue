@@ -68,7 +68,7 @@ export default {
                 },
                 {}
             ).then(res => {
-                if (res.state == 200) {
+                if (res.code == 200) {
                     localStorage.setItem('token', res.data.token);
                     localStorage.setItem('userName', res.data.username);
                     localStorage.setItem('realName', res.data.realname);

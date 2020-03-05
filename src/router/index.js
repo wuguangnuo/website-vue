@@ -65,6 +65,12 @@ export default new Router({
                     meta: { title: 'markdown编辑器' }
                 },
                 {
+                    // 个人中心
+                    path: '/profile',
+                    component: () => import(/* webpackChunkName: "profile" */ '../components/page/Profile.vue'),
+                    meta: { title: '个人中心' }
+                },
+                {
                     // 图片上传组件
                     path: '/upload',
                     component: () => import(/* webpackChunkName: "upload" */ '../components/page/Upload.vue'),

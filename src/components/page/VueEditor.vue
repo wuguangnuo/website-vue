@@ -9,14 +9,9 @@
             </el-breadcrumb>
         </div>
         <div class="container">
-            <!-- <div class="plugins-tips">
-                Vue-Quill-Editor：基于Quill、适用于Vue2的富文本编辑器。
-                访问地址：
-                <a
-                    href="https://github.com/surmon-china/vue-quill-editor"
-                    target="_blank"
-                >vue-quill-editor</a>
-            </div> -->
+            <div class="plugins-tips">
+                注意：不建议使用图片上传功能，建议插入图片链接
+            </div>
             <div style='margin-bottom:20px'>
                 <label>小说标题</label>
                 <el-input v-model="title" placeholder="小说标题"></el-input>
@@ -76,7 +71,7 @@ export default {
                 'novelDetail',
                 {id: novelId}
             ).then(res => {
-                if (res.state == 200) {
+                if (res.code == 200) {
                     this.novelId = res.data.id
                     this.content = res.data.novelContent
                     this.title = res.data.novelTitle
@@ -99,7 +94,7 @@ export default {
                 },
                 {}
             ).then(res => {
-                if (res.state == 200) {
+                if (res.code == 200) {
                     if(this.novelId == 0){
                         this.$message.success('提交成功！');
                     }else{
