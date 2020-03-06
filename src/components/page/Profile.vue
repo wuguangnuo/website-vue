@@ -11,10 +11,13 @@
                     <div class="form-box">
                         <el-form ref="form" :model="form" label-width="80px">
                             <el-form-item label="登录名">
-                                <el-input v-model="form.username"></el-input>
+                                <el-input v-model="form.username" :disabled="true"></el-input>
                             </el-form-item>
                             <el-form-item label="姓名">
                                 <el-input v-model="form.realname"></el-input>
+                            </el-form-item>
+                            <el-form-item label="邮箱">
+                                <el-input v-model="form.email"></el-input>
                             </el-form-item>
                             <el-form-item label="密码">
                                 <el-input v-model="form.password" show-password></el-input>
@@ -46,7 +49,7 @@
                     drag-mode="move"
                     :view-mode="1"
                     :movable="true"
-                    :crop-box-movable="false"
+                    :crop-box-movable="true"
                     :crop-box-resizable="false"
                     alt="Profiel afbeelding"
                 ></vue-cropper>
@@ -71,6 +74,7 @@
                 form:{
                     username:'',
                     realname:'',
+                    email:'',
                     password:'',
                     headimg:''
                 }
@@ -94,13 +98,21 @@
                 reader.readAsDataURL(file);
             },
             cropImage () {
-                this.form.headimg = this.$refs.cropper.getCroppedCanvas().toDataURL();
+                let w = this.$refs.cropper.getCroppedCanvas().width
+                let scale = 400/w<1?400/w:1
+                
+                this.form.headimg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', scale);
             },
             cancelCrop(){
                 this.dialogVisible = false;
                 this.form.head = this.defaultSrc;
             },
             onSubmit(){
+                const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+                if(!mailReg.test(this.form.email)){
+                    this.$message.error("邮箱格式错误，请重新输入");
+                    return;
+                }
                 this.$postData("updateProfile",this.form,{}).then(res=>{
                     if(res.code == 200){
                         this.$message.success("更新成功，请重新登录");
