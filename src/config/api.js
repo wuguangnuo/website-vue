@@ -2,6 +2,7 @@ export default {
 
     login: "/login",//登录
     menuTree: "/profile/menuTree",//权限菜单
+    getHomeInfo: "manage/getHomeInfo",//获取首页信息
 
     blogList: "/home/blogList",//查看博客列表
     blogDetail: "/home/blogDetail",//查看博客

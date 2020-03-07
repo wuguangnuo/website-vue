@@ -11,7 +11,10 @@ import './assets/css/icon.css';
 import './components/common/directives';
 import 'babel-polyfill';
 import './config/axios'
+import ECharts from 'vue-echarts'
 
+// import 'echarts-gl'
+Vue.component('v-chart', ECharts)
 Vue.config.productionTip = false;
 Vue.use(VueI18n);
 Vue.use(ElementUI, {

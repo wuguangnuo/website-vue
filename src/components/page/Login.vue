@@ -73,7 +73,6 @@ export default {
                     localStorage.setItem('userName', res.data.username);
                     localStorage.setItem('realName', res.data.realname);
                     localStorage.setItem('headImg', res.data.headimg);
-                    localStorage.setItem('lastTm', res.data.loginAt);
                     this.$router.push('/');
                 } else {
                     this.loginTips = res.msg;

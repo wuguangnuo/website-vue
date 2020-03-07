@@ -55,16 +55,12 @@ export default {
         return {
             collapse: false,
             fullscreen: false,
-            name: 'linxin',
+            username: localStorage.getItem('realName'),
             message: 2,
             headImg: localStorage.getItem("headImg")
         };
     },
     computed: {
-        username() {
-            let username = localStorage.getItem('realName');
-            return username ? username : this.name;
-        }
     },
     methods: {
         // 用户名下拉菜单选择事件
