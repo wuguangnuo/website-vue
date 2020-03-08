@@ -59,7 +59,7 @@
         <el-row :gutter="20">
             <el-col :span="24">
                 <el-card shadow="hover">
-                    <v-chart :options="weekChart" style="width:80%;height:500px" theme="light"></v-chart>
+                    <v-chart :options="weekChart" style="width:90%;height:800px" theme="light"></v-chart>
                 </el-card>
             </el-col>
         </el-row>

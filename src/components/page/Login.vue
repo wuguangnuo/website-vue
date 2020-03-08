@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">黄毛写小说专用系统</div>
+            <div class="ms-title">写小说专用系统</div>
             <el-form
                 :model="ruleForm"
                 :rules="rules"
