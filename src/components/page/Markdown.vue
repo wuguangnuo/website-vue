@@ -10,10 +10,32 @@
             <div class="plugins-tips">
                 注意：不建议使用图片上传大图(超过200kb)，大图建议插入图片链接
             </div>
-            <div style='margin-bottom:20px'>
-                <label>小说标题</label>
-                <el-input v-model="title" placeholder="小说标题"></el-input>
-            </div>
+            <el-form>
+                <el-row>
+                    <el-col :span="10">
+                    <el-form-item label="文章标题">
+                        <el-input
+                        v-model="title"
+                        placeholder="文章标题"
+                        style="width:400px"
+                        class="handle-input mr10"
+                        ></el-input>
+                    </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                    <el-form-item label="文章权限">
+                        <el-select v-model="state" placeholder="请选择">
+                            <el-option
+                                v-for="item in stateEnum"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
             <mavon-editor v-model="content" ref="md" @imgAdd="$imgAdd" @change="change" style="min-height: 600px"/>
             <el-button class="editor-btn" type="primary" @click="submit">提交/更新</el-button>
             <el-button class="editor-btn" type="primary" @click="newNovel">新文章</el-button>
@@ -33,7 +55,15 @@
                 content:'',
                 html:'',
                 configs: {
-                }
+                },
+                state: '',
+                stateEnum: [{
+                    value: '11',
+                    label: '自己可见'
+                }, {
+                    value: '12',
+                    label: '所有人可见'
+                }]
             }
         },
         created(){
@@ -65,6 +95,7 @@
                         this.novelId = res.data.id
                         this.content = res.data.novelContent
                         this.title = res.data.novelTitle
+                        this.state = res.data.novelState
                     } else {
                         this.$message.error(res.msg);
                     }
@@ -110,7 +141,8 @@
                     {
                         id: this.novelId,
                         novelContent: this.content,
-                        novelTitle: this.title
+                        novelTitle: this.title,
+                        novelState: this.state
                     },
                     {}
                 ).then(res => {
@@ -136,6 +168,7 @@
                     this.title = "";
                     this.novelId = 0;
                     this.html = "";
+                    this.state = '';
                     this.$message({
                         type: 'success',
                         message: '新小说!'

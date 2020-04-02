@@ -118,6 +118,13 @@
           sortable="custom"
         ></el-table-column>
         <el-table-column
+          prop="novelState"
+          label="状态"
+          width="150"
+          :show-overflow-tooltip="true"
+          sortable="custom"
+        ></el-table-column>
+        <el-table-column
           prop="novelContent"
           label="内容"
           :show-overflow-tooltip="true"
@@ -258,11 +265,15 @@ export default {
             });
         },
         novelDelete(index, row) {
-            this.$confirm('确定删除文章【' + row.novelTitle + '】?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            })
+            let param1 = '确定删除文章【' + row.novelTitle + '】?'
+            let param2 = '提示'
+            let param3 = {confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning'}
+            if(row.novelState.includes('删除')){
+              param1 = '确定永久删除文章【' + row.novelTitle + '】?'
+              param2 = '删除确认'
+              param3 = {confirmButtonText: '确定', cancelButtonText: '取消', type: 'error'}
+            }
+            this.$confirm(param1, param2, param3)
                 .then(() => {
                     this.$postData('novelDelete', { id: row.id }, {})
                         .then(res => {
