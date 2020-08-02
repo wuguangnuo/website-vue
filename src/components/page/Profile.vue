@@ -114,10 +114,10 @@
                     return;
                 }
                 this.$postData("updateProfile",this.form,{}).then(res=>{
-                    if(res.code == 200){
+                    if(res.status == 200){
                         this.$message.success("更新成功，请重新登录");
                     }else{
-                        this.$message.error(res.msg);
+                        this.$message.error(res.message);
                     }
                 }).catch(err=>{
                     this.$message.error("更新失败，系统超时");
@@ -125,10 +125,10 @@
             },
             getProfile(){
                 this.$postData("getProfile",{},{}).then(res=>{
-                    if(res.code == 200){
+                    if(res.status == 200){
                         this.form = res.data
                     }else{
-                        this.$message.error(res.msg);
+                        this.$message.error(res.message);
                     }
                 }).catch(err=>{
                     this.$message.error("查询失败，系统超时");

@@ -252,12 +252,12 @@ export default {
         novelDownload(index, row) {
           this.$postData('novelDownload', { id: row.id }, {})
             .then(res => {
-                if (res.code == 200) {
+                if (res.status == 200) {
                     this.$alert('文件生成成功，点击&nbsp;<strong><a href="'+res.data+'">'+row.novelTitle+'</a></strong>&nbsp;下载', '文件下载', {
                       dangerouslyUseHTMLString: true
                     });
                 } else {
-                    this.$message.error('操作失败，' + res.msg);
+                    this.$message.error('操作失败，' + res.message);
                 }
             })
             .catch(error => {
@@ -277,14 +277,14 @@ export default {
                 .then(() => {
                     this.$postData('novelDelete', { id: row.id }, {})
                         .then(res => {
-                            if (res.code == 200) {
+                            if (res.status == 200) {
                                 this.$message({
                                     type: 'success',
                                     message: '删除成功!'
                                 });
                                 this.getData();
                             } else {
-                                this.$message.error('操作失败，' + res.msg);
+                                this.$message.error('操作失败，' + res.message);
                             }
                         })
                         .catch(error => {
@@ -308,15 +308,15 @@ export default {
         },
         getData() {
             this.openFullScreen();
-            this.$postData('novelList', this.dto, {})
+            this.$pageData('novelList', this.dto, {})
                 .then(res => {
-                    if (res.code == 200) {
-                        this.tableData = res.data.records;
+                    if (res.status == 200) {
+                        this.tableData = res.data.list;
                         this.pageInfo = res.data;
                         this.closeFullScreen();
                     } else {
                         this.closeFullScreen();
-                        this.$message.error('查询失败，' + res.msg);
+                        this.$message.error('查询失败，' + res.message);
                     }
                 })
                 .catch(error => {
@@ -340,7 +340,7 @@ export default {
         },
         exportExcel() {
             this.dto.export = 'Excel';
-            this.$postData('novelList', this.dto, {
+            this.$$postData('novelList', this.dto, {
                 responseType: 'arraybuffer'
             }).then(res => {
                 this.blobExport({

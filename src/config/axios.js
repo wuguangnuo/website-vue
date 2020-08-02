@@ -21,14 +21,12 @@ axios.interceptors.request.use(config => {
   return Promise.reject(error);
 });
 
-
 // 添加响应拦截器(axios请求后)
 axios.interceptors.response.use(response => {
   // 对响应数据做点什么
-  // if(response.data.code == 500){
-
-  // }
-  //   console.log(response)
+  if (response.data.status == 401) {
+    window.location.href = "/login";
+  }
   return response.data;
 }, error => {
 
@@ -73,10 +71,22 @@ const getData = (url, params) => {
     params
   });
 }
+const pageData = (url, data, page = {}) => {
+  url = api[url];
+  if (!page.pageIndex) { page.pageIndex = 1 }
+  if (!page.pageSize) { page.pageSize = 10 }
+  url += "?pateNum=" + page.pageIndex + "&pageSize=" + page.pageSize;
+  if (page.orderBySort && page.orderBy) {
+    url += "&orderBySort=" + page.orderBySort + "&orderByColumn=" + page.orderByColumn;
+  }
+
+  console.log("url", url)
+  return axios.post(url, data, {});
+}
 
 Vue.prototype.$postData = postData;
 Vue.prototype.$getData = getData;
-
+Vue.prototype.$pageData = pageData;
 
 // axios.post('/v2/movie/in_theaters', qs.stringify({
 //   num: 1
@@ -110,5 +120,5 @@ Vue.prototype.$getData = getData;
 //   });
 
 export default {
-  postData, getData
+  postData, getData, pageData
 };

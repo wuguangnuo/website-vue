@@ -91,13 +91,13 @@
                     'novelDetail',
                     {id: novelId}
                 ).then(res => {
-                    if (res.code == 200) {
+                    if (res.status == 200) {
                         this.novelId = res.data.id
                         this.content = res.data.novelContent
                         this.title = res.data.novelTitle
                         this.state = res.data.novelState
                     } else {
-                        this.$message.error(res.msg);
+                        this.$message.error(res.message);
                     }
                 }).catch(error => {
                     this.$message.error('查询失败，系统超时');
@@ -118,11 +118,11 @@
                 // })
                 this.$postData('uploadImg', formdata)
                     .then(res => {
-                        if (res.code == 200) {
-                            this.$message.success(res.msg);
+                        if (res.status == 200) {
+                            this.$message.success(res.message);
                             this.$refs.md.$img2Url(pos, res.data);
                         } else {
-                            this.$message.error(res.msg);
+                            this.$message.error(res.message);
                         }
                     }).catch(error => {
                         this.$message.error('查询失败，系统超时');
@@ -146,7 +146,7 @@
                     },
                     {}
                 ).then(res => {
-                    if (res.code == 200) {
+                    if (res.status == 200) {
                         if(this.novelId == 0){
                             this.$message.success('提交成功！');
                         }else{
@@ -155,7 +155,7 @@
                         this.novelId = res.data;
                         
                     } else {
-                        this.$message.error(res.msg);
+                        this.$message.error(res.message);
                     }
                 });
             }, newNovel(){

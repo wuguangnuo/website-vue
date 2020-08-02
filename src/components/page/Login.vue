@@ -68,14 +68,14 @@ export default {
                 },
                 {}
             ).then(res => {
-                if (res.code == 200) {
-                    localStorage.setItem('token', res.data.token);
+                if (res.status == 200) {
+                    localStorage.setItem('token', res.data.uuid);
                     localStorage.setItem('userName', res.data.username);
                     localStorage.setItem('realName', res.data.realname);
                     localStorage.setItem('headImg', res.data.headimg);
                     this.$router.push('/');
                 } else {
-                    this.loginTips = res.msg;
+                    this.loginTips = res.message;
                 }
             });
         }
